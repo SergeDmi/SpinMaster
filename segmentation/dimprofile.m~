@@ -1,0 +1,48 @@
+function [Zint] = dimprofile(M, x, y, d, showplot)
+% function similar to improfile from image-processing toolbox
+% except interpolates value of function along d parallel lines
+%
+% inputs:
+%          M = matrix defining function
+%      [x,y] = scalar coordinates definining endpoints of line
+%          d = profile width
+%   showplot = plot intensities of interpolated profile
+%
+% returns:
+%       Zint = interpoloted values of function M
+%
+% todo: generalize function to make it consistent with improfile.m
+
+if nargin < 5
+    showplot = 0;
+end
+
+% position and translation vectors
+prof   = [x, y]
+trans  = diff(prof)
+
+% basis vectors for defining window
+v_hat = trans/norm(trans)
+n_hat = [v_hat(:,2), -v_hat(:,1)]
+
+steps  = ceil(segments_lengths(prof))
+
+% matrix of indices for pixel matrix (unit size)
+[xm, ym] = meshgrid(1:size(M, 2), 1:size(M, 1)); 
+
+% integers defining translations of basis vectors to generate window
+[xnew, ynew] = meshgrid(1:steps, 1:d);
+
+
+
+for i=1:length(x)-1
+    newPointsX = repmat(prof(:, 1), d, sum(steps))+(xnew-1)*v_hat(1)+(ynew-(d+1)/2)*n_hat(1);
+    newPointsY = repmat(prof(:, 2), d, sum(steps))+(xnew-1)*v_hat(2)+(ynew-(d+1)/2)*n_hat(2);
+
+    % do the interpolation
+    Zint = interp2(xm, ym, double(M), newPointsX, newPointsY);
+end
+
+if showplot 
+    figure; imagesc(Zint); axis equal tight;  
+end

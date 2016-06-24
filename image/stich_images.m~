@@ -1,0 +1,54 @@
+function IM = stich_images()
+% Please, choose the reference image
+% by setting "base" below
+fname=
+list = image_list;
+base = list(1);
+image = spin_load_pixels(base);
+si=size(image.data);
+nim=numel(list);
+lx=si(1);
+ly=si(2);
+[nx,ny]=guess_best_shape(nim);
+IM=zeros(nx*lx,ly*ny);
+i=1;
+j=1;
+for k=1:nim
+    base = list(k);
+    image = spin_load_pixels(base);
+    IM(lx*(i-1)+1:lx*i,ly*(j-1)+1:ly*j)=image.data;
+    if i<nx
+        i=i+1;
+    else
+        i=1;
+        j=j+1;
+    end
+end
+BIM=mat2gray(IM);
+imwrite(BIM,'stiched_image.tif');
+spin_set_images({path_exp});
+   
+
+
+end
+
+function [nx,ny]=guess_best_shape(nim)
+n=sqrt(nim);
+if n==floor(n)
+    nx=n;ny=n;
+elseif ~isprime(nim)
+    nx=ceil(n);
+    ny=ceil(nim/nx);
+    while nx*ny~=nim
+        nx=nx+1;
+        ny=ceil(nim/nx);
+    end
+else
+    nx=ceil(n);
+    NX=[nx:2*nx];
+    NY=ceil(nim./NX);
+    [~,ix]=min(NX*NY);
+    nx=NX(ix);
+    ny=NY(ix);
+end
+end

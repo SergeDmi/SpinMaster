@@ -1,0 +1,10 @@
+function [ clickets ] = click_intermediates( image , opt )
+%Find points between poles and center
+%   3 possible modes
+% S. Dmitrieff, dec 2012
+if nargin<1
+    error('You must provide an image')
+elseif isempty(image)
+
+end
+

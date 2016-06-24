@@ -1,0 +1,96 @@
+function [analysis] = click_folders(opt)
+% [analysis] = time_analyze(opt)
+% reads analysis files and compiles them
+% S. Dmitrieff, March 2013
+
+
+if nargin==0
+    opt=spin_default_options();
+elseif isempty(opt)
+    opt=spin_default_options();
+end
+tmax=max(round(listind(2,:)));
+regions=load_objects(regfilename);
+n_regs=numel(regions);
+
+% Time dependant int, len, angle of spindles
+spindles_int_time=cell(n_regs,npmax);
+spindles_len_time=cell(n_regs,npmax);
+spindles_ang_time=cell(n_regs,npmax);
+nobs=zeros(n_regs,npmax);
+
+spin_count=zeros(npmax,tmax);
+
+%% Building the arrays
+for i=listind(1,:)
+    if i>0
+        fold_name=num2str(i);
+        cd(fold_name);
+        t=listind(2,i);
+        
+        cd '..';
+    end
+end
+
+
+
+%% Reorganizing the angle/lengths arrays
+for i=1:n_regs
+    for n=3:npmax
+        angles=spindles_ang_time{i,n}(1:n-1,:);
+        lengths=spindles_len_time{i,n}(1:n-1,:);
+        points_old=[lengths(:,1) lengths(:,1)].*[cos(angles(:,1)) sin(angles(:,1))];
+        for t=2:nobs(i,n)
+            points=[lengths(:,t) lengths(:,t)].*[cos(angles(:,t)) sin(angles(:,t))];
+            [points_old,odr]=reorder_points(points,points_old);
+            spindles_ang_time{i,n}(1:n-1,t)=spindles_ang_time{i,n}(odr,t);
+            spindles_len_time{i,n}(1:n-1,t)=spindles_len_time{i,n}(odr,t);
+        end
+    end
+end
+
+
+MSD_ang=zeros(npmax,tmax);
+MSD_len=zeros(npmax,tmax);
+MSD_int=zeros(npmax,tmax);
+
+
+count_ang=zeros(npmax,tmax);
+count_len=zeros(npmax,tmax);
+count_int=zeros(npmax,tmax);
+
+%% Analyzing
+% WARNING // -------------------------------------------------------
+% Beware, for angle MSD, angles are not tracked, 
+% i.e. for long times we cannot find MSD \protto t
+% and MSD will saturate below pi
+% ------------------------------------------------------- // WARNING
+for i=1:n_regs
+    for n=2:npmax
+        angs=spindles_ang_time{i,n};
+        lens=spindles_len_time{i,n};
+        ints=spindles_int_time{i,n};
+        %Angles MSD
+        [msd,times]=msd_timed_data(angs(1,:),angs(2,:),'angular');
+        MSD_ang(n,times)=MSD_ang(n,times)+msd;
+        count_ang(n,times)=count_ang(n,times)+1;
+        %Lengths MSD
+        [msd,times]=msd_timed_data(lens(1,:),lens(2,:));
+        MSD_len(n,times)=MSD_len(n,times)+msd;
+        count_len(n,times)=count_len(n,times)+1;
+        %Intensity MSD
+        [msd,times]=msd_timed_data(ints(1,:),ints(2,:));
+        MSD_int(n,times)=MSD_int(n,times)+msd;
+        count_int(n,times)=count_int(n,times)+1;
+    end
+end
+MSD_int=MSD_int./count_int;
+MSD_len=MSD_len./count_len;
+MSD_ang=MSD_ang./count_ang;
+
+analysis.msd_int=MSD_int;
+analysis.msd_ang=MSD_ang;
+analysis.msd_len=MSD_len;
+
+
+end

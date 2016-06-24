@@ -1,0 +1,46 @@
+function show_poles(opt)
+
+% show_poles(opt)
+%
+% display the poles, using the options in opt
+%
+% S. Dmitrieff, Nov 2012
+
+filename='spindles.txt';
+regions_filename='regions.txt';
+if nargin
+    if isfield(opt,'poles_filename')
+        filename=opt.poles_filename;
+    end
+    if isfield(opt,'regions_filename')
+        regions_filename=opt.regions_filename;
+    end
+end
+
+regions=load_regions(regions_filename);
+show_regions(regions,image_base);
+spindles=load_objects(filename);
+centers=region_centers(regions);
+
+n_reg=size(regions,1);
+n_spin=numel(spindles);
+for i=1:n_reg
+    plot(gca,centers(i,2),centers(i,1),'b*');
+end
+for i=1:n_spin
+    poles=spindles{i}.pts
+    k=leng(poles,1)/2;
+    id=spindles{i}.id;
+    center=centers(id,:);
+    if k==1
+        plot(gca,poles(2),poles(1),'r*')
+        plot(gca,[poles(2) center(2)],[poles(1) center(1)],'b')
+    elseif k>1
+        plot(gca,poles(:,2),poles(:,1),'r*')
+        plot(gca,poles(:,2),poles(:,1),'r')
+        plot(gca,[poles(1,2) poles(end,2)],[poles(1,1) poles(end,1)],'r')
+    end
+end
+        
+
+end

@@ -1,0 +1,28 @@
+function [ MSD,MSDerr,bins,counts ] = msd_timed_data( vals,mode )
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+lp= length(vals);
+if nargin<1
+    error('Not enough input data');
+end
+if nargin<2
+    angular=0;
+elseif strcmp(mode,'angular') || mode==1;
+    angular=1;
+end
+lp=size(vals);
+cutoff=lp-1;
+counts=zeros(1,cutoff);
+MSD=zeros(1,cutoff);
+MSDerr=zeros(1,cutoff);
+ 
+        for i=1:cutoff
+            MSD(i)=sum( (vals(1:(lp-i)) - vals((1+i):lp) ).^2 )/(lp-i);
+            MSDerr(i)=sqrt((sum( (vals(1:(lp-i)) - vals((1+i):lp) ).^2 )/(lp-i))^2-MSD(i)^2);
+            counts(i)=lp-i;
+        end
+go_full=0;
+bins=1:cutoff;
+
+end
+

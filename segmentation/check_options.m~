@@ -1,0 +1,20 @@
+function [ opt,val ] = check_options( field,opt,lock )
+% Check if options contains 'field', 
+% If not, loads default options if lock==0
+% Else returns error
+if nargin==0
+    error('No field given');
+elseif nargin==1
+    [opt,val]=check_options(field,[],0);
+elseif nargin==2
+    [opt,val]=check_options(field,opt,0);
+else
+    if ~isfield(opt,'max_polarity')
+        if lock==0
+            [opt,val]=spin_default_options;
+    end
+    npmax=opt.max_polarity;
+end
+
+end
+

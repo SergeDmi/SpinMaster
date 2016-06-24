@@ -1,0 +1,17 @@
+function opt = spin_default_options
+
+opt.radius           = 110;
+opt.visual           = 3;
+opt.local_background = 1;
+opt.flatten_image    = 0;
+opt.auto_center      = 0;
+opt.use_mask         = 0;
+opt.mask             = [];
+opt.time_shift       = 0;
+opt.max_polarity     = 4;
+opt.base             = 1;
+opt.npmax
+opt.regions_filename     = 'regions.txt';
+opt.poles_filename     = 'spindles.txt';
+opt.analysis_filename     = 'analysis.txt';
+return

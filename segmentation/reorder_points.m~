@@ -1,0 +1,16 @@
+function [ pts ] = reorder_points( points, oldpoints )
+%Orders an array of point by minimizing the distance with another array
+%   Largely suboptimal
+S=size(points);
+if S~=size(oldpoints)
+    error('Non matching arrays');
+end
+n=size(1);
+p=perms([1:n])';
+np=size(p,2);
+dist=zeros(1,np);
+for i=1:np
+    d=points(p(:,i),:)-oldpoints(:,:);
+    d=d.^2
+end
+

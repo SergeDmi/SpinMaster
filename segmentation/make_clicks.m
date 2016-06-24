@@ -1,0 +1,78 @@
+function clickets=make_clicks(image,opt)
+% make_clicks(image,opt) add points between centers of regions and poles
+
+% Save the clicks as objects into points.txt
+% S. Dmitrieff, Nov 2012
+
+filename='spindles.txt';
+pointfilename='points.txt';
+if nargin < 2
+    opt=spin_default_options();
+end
+if isfield(opt,'seg_number')
+    nc=opt.seg_number;
+else
+    defopt=spin_default_options;
+    nc=defopt.seg_number;
+end
+
+if  isfield(image, 'data') 
+    if ( length(image) > 1 ) 
+        disp('show_image displaying picture 1 only');
+    end
+    image = image(1).data;
+end
+% compatibility with tiffread color image
+if  iscell(image)    
+    tmp = image;
+    image = zeros([size(tmp{1}), 3]);
+    try
+        for c = 1:numel(tmp)
+            image(:,:,c) = tmp{c};
+        end
+    catch
+        disp('show_image failed to assemble RGB image');
+    end
+    clear tmp;
+end
+
+spindles=load_objects(filename);
+
+% Analysis of spindles
+
+n_spin=numel(spindles);
+xmax=size(image,1);
+ymax=size(image,2);
+
+
+%clickets{n_spin}.points=[];
+npoles=0;
+clickets{1}.id=1;
+clickets{1}.points=[xmax/2 ymax/2];
+
+for n = 1:n_spin
+    sp=spindles{n};
+    r=sp.id;
+    points=sp.points;
+    state=size(points,1)-1;
+    center=points(1,:);
+    if state>0
+        poles=sp.points(2:end,:);
+    end
+    for j=1:state
+        npoles=npoles+1;
+        clicks=zeros(nc+1,2);
+        clicks(1,:)=center;
+        clicks(nc+1,:)=poles(j,:);
+        dc=(poles(j,:)-center)/nc;
+        for i=1:nc-1
+            clicks(i+1,:)=clicks(i,:)+dc;
+        end
+        clickets{npoles}.id=npoles;
+        clickets{npoles}.points=clicks;
+        clickets{npoles}.info=num2str(state);
+    end     
+end
+% Saving clicks
+save_objects(clickets,pointfilename);
+end
