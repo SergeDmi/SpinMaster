@@ -9,6 +9,7 @@ function objects = load_objects(file_name)
 % save_objects, load_objects and edit_objects
 %
 % F. Nedelec, Feb. 2008 - 2012
+% S. Dmitrieff 2012-2014
 
 if nargin < 1
     file_name = 'objects.txt';

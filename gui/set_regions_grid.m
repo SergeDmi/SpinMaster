@@ -1,5 +1,4 @@
 function regions = set_regions_grid(image, opt)
-
 % spots = set_regions_grid( image )
 %
 % define a grid of rectangular regions

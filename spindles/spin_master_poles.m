@@ -1,11 +1,11 @@
-function spin_master
+function spin_master_poles
 
 % Open a dialog to easily start the macros used to analyse
 % spindle morphologies
 %
 %
 % F. Nedelec, Feb., March 2008 - August 2010 - 2012
-
+% S. Dmitrieff 2012-2014
 
 %default options:
 opt = spin_default_options;
@@ -26,6 +26,7 @@ while sum(color) < 1
     color = rand(1,3);
 end
 
+% Updating all functions
 rehash;
 
 %make figure
@@ -38,7 +39,7 @@ hFig = figure('Position', sFig,...
 %% the 'Close' button
 h = button(9,1, 'Close All', @callback_close);
 set(h, 'Tag', 'close-button');
-%%Other topside buttons
+%% Other topside buttons
 button(9,2, 'Stitch images',  'stitch_images();');
 button(9,3, 'Localize Options',  'copyfile(which(''spin_default_options.m''), ''spin_options.m'');');
 button(9,4, 'Edit Options',  'edit spin_options.m;');
@@ -56,11 +57,11 @@ button(5,2, 'Edit Regions', 'edit_regions(image_base);');
 button(4,2, 'Make folders', 'make_time_folders(opt);');
 
 
-button(5,3, 'Set Poles',        'set_centers(image_base,opt);');
-button(4,3, 'Edit poles',        'edit_objects(image_base(),[],''spindles.txt'',2);');
+button(5,3, 'Set Poles',    'set_centers(image_base,opt);');
+button(4,3, 'Edit poles',    'edit_objects(image_base(),[],''spindles.txt'',2);');
 
-button(5,4, 'Click All',        'click_folders(opt);');
-button(4,4, 'Analyze',    'analyze_spindles(image_base,[],opt);');
+button(5,4, 'Click All',     'click_folders(opt);');
+button(4,4, 'Analyze',       'analyze_spindles(image_base,[],opt);');
 
 
 
@@ -96,7 +97,7 @@ drawnow
 
 
 %% Callbacks
-
+% Close all windows
     function callback_close(hObject, eventdata)
         if strcmp(get(hObject, 'String'), 'Close All')
             figs = setdiff( get(0,'Children'), hFig );
@@ -105,7 +106,7 @@ drawnow
         set_state(1);
     end
 
-
+% Generic callback
     function callback(hObject, eventdata, action)
         set_state(0);
         opt = spin_load_options;

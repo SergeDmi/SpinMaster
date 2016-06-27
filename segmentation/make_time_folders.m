@@ -5,6 +5,7 @@ function make_time_folders(opt)
 % A DNA file is needed for latter analysis.
 % S. Dmitrieff, March 2013
 
+%% Input control
 filename='spindles.txt';
 regfilename='regions.txt';
 if nargin < 2
@@ -32,10 +33,11 @@ else
 end
 
 
-%bfn='time';
+%% Creating the folders
+
+% Reading image list
 listim=image_list();
 imdna=[];
-
 t=t0-dt;
 nim=numel(listim);
 listind=zeros(2,nim-1);
@@ -43,6 +45,7 @@ ind=1;
 if nim>2
     increment=listim(2).index-listim(1).index;
 end
+
 for i=1:nim
     if strcmp(listim(i).kind,'tub')
         listind(1,ind)=i;
@@ -52,12 +55,13 @@ for i=1:nim
         imdna=listim(i);
     end
 end
+
 if isempty(imdna)
     error('You must provide a dna image')
 end
 
 
-
+% Making folders and copying information there
 for i=listind(1,:)
     if i>0
         fold_name=num2str(i);
@@ -70,6 +74,7 @@ for i=listind(1,:)
         copyfile(regfilename,fold_name);
         copyfile(filename,fold_name);
         listim(i).time=t;
+        % Making an image list from the image and DNA image
         cd(fold_name);
         make_inherited_list([listim(i) imdna]);
         cd '..';

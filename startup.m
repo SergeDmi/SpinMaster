@@ -1,12 +1,13 @@
-%---------------startup file F. Nedelec 2010
+%%---------------startup file F. Nedelec 2010
 
 % Copy this file to ~/Documents/MATLAB and it will be run automatically
 
 owd = pwd;
 
-%---------------update path:
-
+%%---------------update path:
+% ------------------------------------------------------
 matdir = '~/code/matned';
+% Replace matdir whith the location of the matned suite
 if isdir(matdir)
     cd(matdir);
 

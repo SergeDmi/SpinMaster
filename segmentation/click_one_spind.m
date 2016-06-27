@@ -1,9 +1,7 @@
 function [spindle] = click_one_spind(image,opt,region,spindle)
-% poles = edit_poles(image,opt)
+% spindle = click_one_spind(image,opt)
 %
-% use regions on the image to get the poles in each region clicked
-% %npmax : maximum number of poles to be considered
-% %any higher polarity can be stored under npmax too.
+% cliking the poles of individual spindles
 %
 % S. Dmitrieff Nov 2012
 
@@ -66,8 +64,7 @@ xmax=size(image,1);
 ymax=size(image,2);
 
 
-%% Then plot each region and ask for coordinates
-
+%% Cropping region and asking for coordinates
 coords=region.pts;
 center=[(coords(1)+coords(3))/2,(coords(4)+coords(2))/2];
 pos_center=center - [coords(1),coords(2)];
@@ -102,7 +99,7 @@ end
 spindle=results{1};
 
 
-% Correct points
+% Translate back points
 if ~isempty(spindle.points)
     nl=size(spindle.points,1);
     for i=1:nl

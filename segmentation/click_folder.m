@@ -1,10 +1,6 @@
 function click_folder(fold,kind,opt)
-% [analysis] = time_analyze(opt)
-% reads analysis files and compiles them
+% Allows user to click the poles of each spindle in a folder
 % S. Dmitrieff, March 2013
-
-
-
 if nargin==0
     error('No folder name given');
 end

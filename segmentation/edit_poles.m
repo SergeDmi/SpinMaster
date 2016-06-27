@@ -2,9 +2,7 @@ function [spindles] = edit_poles(image,opt)
 % poles = edit_poles(image,opt)
 %
 % use regions on the image to get the poles in each region clicked
-% %npmax : maximum number of poles to be considered
-% %any higher polarity can be stored under npmax too.
-%
+% The program will zoom on each spindle for accurate clicking
 % S. Dmitrieff Nov 2012
 
 

@@ -1,5 +1,4 @@
 function objects = edit_objects(im, objects, filename, mode)
-
 % Creates a GUI to draw objects using the mouse on the provided image.
 %
 % Syntax:
@@ -11,13 +10,16 @@ function objects = edit_objects(im, objects, filename, mode)
 % Objects are defined by clicking on the image:
 %  A simple click defines an object composed of one point.
 %  A click-and-drag motion defines an object composed of two points.
-%  Further points can be added with shift-clicks.
+%  Further points can be added to objects with shift-clicks.
 %
 % You can select/deselect objects by clicking on them and:
 % - delete selected object with backspace
 % - move selected objects with the arrow-keys
 % Selected objects are highligted in red.
 % If an object is selected, shift-clicks will add point to this object.
+%
+% You can switch to the next object (or point) by pressing "Return"
+% You can toggle between point and object selection by pressing the "*" key
 %
 % In addition one can:
 % - zoom in and out with the mouse-wheel
@@ -36,7 +38,7 @@ function objects = edit_objects(im, objects, filename, mode)
 %     save_objects, load_objects and show_objects
 %
 % F. Nedelec, Jan. 2009 - Nov. 2012 - Jan 2013
-% S. Dmitrief - Jan 2013
+% S. Dmitrief -  2013 - 2014
 
 if nargin < 1
     error('First argument should be an image');

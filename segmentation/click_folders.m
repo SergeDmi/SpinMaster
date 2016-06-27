@@ -1,6 +1,6 @@
 function click_folders(opt)
-% [analysis] = time_analyze(opt)
-% reads analysis files and compiles them
+% click_folders(opt)
+% Allows user to click all poles in all folders
 % S. Dmitrieff, March 2013
 
 

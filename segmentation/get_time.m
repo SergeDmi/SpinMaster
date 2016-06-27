@@ -20,5 +20,5 @@ if i>0
 else
     t0=1;
 end
-t=t0+(img_obj.index-1)/di;
+t=t0+(img_obj.index-1)*di;
 end

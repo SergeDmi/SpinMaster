@@ -2,6 +2,8 @@ function  analysis=analyze_spindles(image,tiling,opt)
 % [analysis,profiles] = analyze_spindles(image, opt, tiling)
 % Triggers analysis of spindle contours or backbones (according to opt)
 % Tiling contains the tiling of the image (used for background removal)
+% Important : published version of SpinMaster has no contours
+% Just analyzing pole dynamics is done with opt.contour_analysis == 0
 % S. Dmitrieff, March 2013
 if nargin<1
     image=image_base();

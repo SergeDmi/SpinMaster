@@ -1,12 +1,10 @@
 function [spindles] = set_centers(image,opt)
-
-% poles = spin_save_clicks(image)
+% spindles = set_centers(image,options)
 %
-% use regions on the image to get the poles in each region clicked
-% %npmax : maximum number of poles to be considered
-% %any higher polarity can be stored under npmax too.
+% use regions on the image to generate the spindle centers
+% Generate a structure of spindle objects with only one point : their center
 %
-% S. Dmitrieff Nov 2012
+% S. Dmitrieff  2012-2014
 
 
 %% Init.
