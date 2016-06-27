@@ -5,7 +5,7 @@
 #
 # This code includes :
 # - software to load and process microscopy images
-# - a GUI to locate objectes on an image
+# - a GUI to locate objects on an image
 # - these objects can be areas (regions) or items (spindes)
 # - saving/loading and editing of such objects
 # - creating time sequence of individual objects (trajectories)
